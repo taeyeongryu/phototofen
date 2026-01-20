@@ -80,6 +80,13 @@ phototofen/
 └── specs/              # 프로젝트 상세 명세 및 설계 문서
 ```
 
+## 📈 개발 현황
+
+- **[2026-01-20] Phase 1: Setup 완료**
+  - 백엔드 FastAPI 초기 구조 및 CORS 설정 완료
+  - 프론트엔드 Vite + React + TypeScript 환경 구축
+  - Tailwind CSS 연동 및 UI 기본 틀 마련
+
 ## 📝 라이선스
 
 이 프로젝트는 교육 및 학습 목적으로 제작되었습니다.

@@ -11,7 +11,7 @@ Build a web application that converts photos of chess puzzles into FEN notation.
 
 ## Technical Context
 
-**Language/Version**: Python 3.10+, TypeScript 5+
+**Language/Version**: Python 3.10+, TypeScript 5+, Node.js 22
 **Primary Dependencies**: FastAPI, React, Vite, OpenCV, Tailwind CSS
 **Storage**: N/A (Stateless processing)
 **Testing**: pytest (Backend), Vitest (Frontend)

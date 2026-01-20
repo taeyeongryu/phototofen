@@ -1,49 +1,45 @@
-# Research & Technical Decisions
+# Research: Chess Puzzle Photo to FEN
 
-## Technology Stack
+## Technical Decisions
 
-### Frontend
-- **Framework**: React (via Vite)
-  - **Rationale**: Fast development, excellent TypeScript support, lightweight.
-- **Language**: TypeScript
-  - **Rationale**: Type safety for FEN strings and API responses.
-- **Styling**: Tailwind CSS
-  - **Rationale**: Rapid UI development, responsive out of the box.
-- **State Management**: React Context / Hooks
-  - **Rationale**: Simple application state (upload -> select -> result), no need for Redux.
+### Python Environment Management
+- **Decision**: `venv` (Standard Library)
+- **Rationale**: User explicitly requested `venv`. It is the standard, built-in way to manage environments in Python, requiring no external tools like Poetry or Pipenv for this scale.
+- **Alternatives Considered**: 
+    - Poetry: Good for dependency resolution but adds complexity.
+    - Conda: Good for data science but heavier.
+    - Pipenv: Workflow can be slower.
 
-### Backend
-- **Framework**: FastAPI
-  - **Rationale**: High performance, native async support (good for I/O bound ML tasks), automatic OpenAPI docs.
-- **Language**: Python 3.10+
-  - **Rationale**: Ecosystem dominance in AI/ML (OpenCV, PyTorch/TensorFlow).
+### Backend Framework
+- **Decision**: FastAPI
+- **Rationale**: High performance, easy async support (good for I/O bound image uploads), automatic OpenAPI documentation generation.
+- **Alternatives Considered**: 
+    - Flask: Simpler but manual async handling and doc generation.
+    - Django: Too heavy for a simple stateless API.
 
-### Core Engine (Image to FEN)
-- **Board Detection**: OpenCV (`opencv-python-headless`)
-  - **Approach**: Canny edge detection + Hough Line Transform or `findChessboardCorners` to locate the grid.
-- **Piece Classification**: PyTorch (`torch`, `torchvision`)
-  - **Rationale**: Lightweight inference, easy to load pre-trained models.
-  - **Implementation Strategy**:
-    1. **Pre-processing**: Crop image to board, slice into 64 squares.
-    2. **Inference**: Pass each square through a CNN classifier (e.g., a simple ResNet or custom CNN).
-    3. **Note**: Since we cannot train a model in this session, the implementation will provide the **inference pipeline** and a script/instruction to download or train a basic model. *For the prototype, we will include a mock/heuristic mode or a simple template matcher if weights are unavailable.*
+### Image Processing
+- **Decision**: OpenCV (`opencv-python`)
+- **Rationale**: Industry standard for computer vision tasks like grid detection, edge detection, and perspective transformation.
+- **Alternatives Considered**: 
+    - PIL/Pillow: Good for basic manipulation but lacks advanced computer vision algorithms needed for board detection.
+    - Scikit-image: More academic/heavy.
 
-## Unknowns Resolution
+### Frontend Framework
+- **Decision**: React + Vite + TypeScript
+- **Rationale**: Modern, fast tooling (Vite), type safety (TS), and rich ecosystem (React). Matches current industry standards for web apps.
 
-### [NEEDS CLARIFICATION: Optimal Tool for Recognition]
-- **Decision**: Custom Pipeline (OpenCV + CNN).
-- **Why**: "All-in-one" libraries are often outdated (Python 2.7 era) or unmaintained. Building a modular pipeline allows swapping the classifier (e.g., from template matching to YOLOv8) without rewriting the app.
-- **Alternative**: `tensorflow-chessbot` (TensorFlow 1.x, hard to run). `python-chess` (only handles logic, not vision).
+### Styling
+- **Decision**: Tailwind CSS
+- **Rationale**: Rapid development, consistent utility-first styling without leaving markup.
 
-### [NEEDS CLARIFICATION: Board Orientation]
-- **Decision**: User input required (as per spec "specify turn").
-- **Assumption**: We will assume the board is oriented from the perspective of the player whose turn it is, OR we will default to "White at bottom" and provide a "Flip Board" button in the UI if the FEN is upside down. *Refinement*: The Spec mentions asking for "Turn", but strictly speaking, "Turn" (White to move) is different from "Orientation" (White at bottom).
-- **Refined Requirement**: We will assume standard diagram orientation (White at bottom) for the image processing. If the user implies "Black's perspective", the FEN logic might need to rotate the board. For MVP, we stick to "White at bottom" assumption for visual processing.
+### Node.js Version
+- **Decision**: Node.js 22
+- **Rationale**: Explicit user request. Latest Long Term Support (LTS) version providing better performance and modern features.
+- **Alternatives Considered**: 
+    - Node.js 18/20: Older LTS versions, but user specifically requested 22.
 
-## Architecture
+## Unknowns & Clarifications
 
-- **Client**: Uploads Image -> Checks Preview -> Selects Turn -> POST /analyze -> Displays FEN.
-- **Server**:
-  - `POST /api/analyze`: Accepts `file` and `turn`.
-  - `ImageProcessor`: Decodes image -> Finds Board -> Extracts 64 Squares.
-  - `FenGenerator`: Classifies squares -> Constructs FEN -> Appends active color.
+- **Chess Piece Recognition Model**: 
+    - *Initial approach*: Heuristic/Color detection + Template matching or simple CNN if needed. For MVP, we might start with basic heuristics or a placeholder.
+    - *Resolution*: Start with basic image processing (color/contours). If insufficient, explore `tensorflow` or `pytorch` with a pre-trained model later. For now, keep dependencies minimal.

@@ -2,15 +2,13 @@ openapi: 3.0.0
 info:
   title: Chess Photo to FEN API
   version: 1.0.0
-  description: API for converting chess puzzle images to FEN notation.
-
+  description: API to convert chess puzzle photos to FEN strings.
 paths:
   /api/analyze:
     post:
-      summary: Convert image to FEN
+      summary: Analyze a chess board image
       operationId: analyzeImage
       requestBody:
-        required: true
         content:
           multipart/form-data:
             schema:
@@ -19,42 +17,33 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: The chess puzzle image (JPG/PNG).
+                  description: The image file to analyze.
                 active_color:
                   type: string
                   enum: ['w', 'b']
                   default: 'w'
                   description: The side to move.
+              required:
+                - file
+                - active_color
       responses:
         '200':
-          description: Successful conversion
+          description: Successful analysis
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalysisResponse'
+                type: object
+                properties:
+                  fen:
+                    type: string
+                    example: "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"
+                  confidence:
+                    type: number
+                    format: float
+                    example: 0.95
         '400':
           description: Invalid input (e.g., not an image)
         '422':
-          description: Could not detect board
+          description: Validation Error
         '500':
-          description: Server error
-
-components:
-  schemas:
-    AnalysisResponse:
-      type: object
-      required:
-        - fen
-      properties:
-        fen:
-          type: string
-          example: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-          description: The resulting FEN string.
-        confidence:
-          type: number
-          format: float
-          example: 0.95
-          description: Confidence score of the prediction.
-        detected_board_image:
-          type: string
-          description: Base64 encoded debug image showing detection.
+          description: Server error (processing failed)

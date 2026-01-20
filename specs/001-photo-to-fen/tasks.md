@@ -1,16 +1,16 @@
 # Tasks: Chess Puzzle Photo to FEN
 
 **Spec**: `specs/001-photo-to-fen/spec.md`
-**Status**: In Progress
+**Status**: Pending
 
 ## Phase 1: Setup
 *Goal: Initialize project structure and dependencies.*
 
-- [ ] T001 Create backend project structure and `backend/requirements.txt` with FastAPI, OpenCV, Uvicorn
-- [ ] T002 Initialize frontend with Vite (React + TS) in `frontend/`
-- [ ] T003 Configure Tailwind CSS in `frontend/`
-- [ ] T004 [P] Setup basic FastAPI app in `backend/app/main.py` with CORS middleware
-- [ ] T005 [P] Setup basic Frontend App structure in `frontend/src/App.tsx`
+- [x] T001 Create backend project structure and `backend/requirements.txt` with FastAPI, OpenCV, Uvicorn in `backend/`
+- [x] T002 Initialize frontend with Vite (React + TS) in `frontend/`
+- [x] T003 Configure Tailwind CSS in `frontend/`
+- [x] T004 [P] Setup basic FastAPI app in `backend/app/main.py` with CORS middleware
+- [x] T005 [P] Setup basic Frontend App structure in `frontend/src/App.tsx`
 
 ## Phase 2: Foundational
 *Goal: Establish shared data models and API client.*
@@ -39,8 +39,8 @@
 
 - [ ] T018 [US2] Create `TurnSelector` component in `frontend/src/components/TurnSelector.tsx`
 - [ ] T019 [US2] Update `AnalysisRequest` model in `backend/app/models/api_models.py` to include `active_color`
-- [ ] T020 [US2] Update `fen_generator.py` to use provided `active_color`
-- [ ] T021 [US2] Integrate `TurnSelector` into `Home.tsx` and API call
+- [ ] T020 [US2] Update `fen_generator.py` to use provided `active_color` in `backend/app/services/fen_generator.py`
+- [ ] T021 [US2] Integrate `TurnSelector` into `Home.tsx` and API call in `frontend/src/pages/Home.tsx`
 
 ## Phase 5: User Story 3 - Copy FEN to Clipboard (P2)
 *Goal: Easy copy functionality for the result.*
@@ -48,7 +48,7 @@
 
 - [ ] T022 [US3] Create `FenDisplay` component with Copy button in `frontend/src/components/FenDisplay.tsx`
 - [ ] T023 [US3] Implement clipboard copy logic in `frontend/src/components/FenDisplay.tsx`
-- [ ] T024 [US3] Replace raw FEN display in `Home.tsx` with `FenDisplay` component
+- [ ] T024 [US3] Replace raw FEN display in `Home.tsx` with `FenDisplay` component in `frontend/src/pages/Home.tsx`
 
 ## Phase 6: Polish & Cross-Cutting
 *Goal: Error handling, UI refinements, and final cleanup.*

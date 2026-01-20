@@ -1,26 +1,62 @@
-# Quickstart: Photo to FEN
+# Quickstart: Chess Puzzle Photo to FEN
 
 ## Prerequisites
-- Node.js 18+
-- Python 3.10+
-- `pip` and `npm`
+
+- **Python**: 3.10+
+- **Node.js**: 22
+- **Git**
 
 ## Setup
 
-### Backend (Python)
-1. Navigate to `backend/`.
-2. Create venv: `python -m venv venv`
-3. Activate: `.\venv\Scripts\Activate` (Windows)
-4. Install: `pip install -r requirements.txt`
-5. Run: `uvicorn main:app --reload`
+### Backend (Python + venv)
 
-### Frontend (React)
-1. Navigate to `frontend/`.
-2. Install: `npm install`
-3. Run: `npm run dev`
+1. Navigate to backend:
+   ```bash
+   cd backend
+   ```
 
-## Development Flow
-1. Start Backend (Port 8000).
-2. Start Frontend (Port 5173).
-3. Open `http://localhost:5173`.
-4. Upload an image to test.
+2. **Create and Activate venv**:
+   *Windows (PowerShell)*:
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+   *Linux/macOS*:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the server:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   Server will be at `http://localhost:8000`.
+
+### Frontend (React + Vite)
+
+1. Navigate to frontend:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the dev server:
+   ```bash
+   npm run dev
+   ```
+   Frontend will be at `http://localhost:5173`.
+
+## Verification
+
+1. Ensure Backend is running. Open `http://localhost:8000/docs`.
+2. Ensure Frontend is running. Open `http://localhost:5173`.
