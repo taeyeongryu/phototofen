@@ -15,9 +15,9 @@
 ## Phase 2: Foundational
 *Goal: Establish shared data models and API client.*
 
-- [ ] T006 Create Pydantic models for `AnalysisRequest` and `AnalysisResponse` in `backend/app/models/api_models.py`
-- [ ] T007 Create API client wrapper in `frontend/src/api/client.ts`
-- [ ] T008 Create basic UI Layout component in `frontend/src/components/Layout.tsx`
+- [x] T006 Create Pydantic models for `AnalysisRequest` and `AnalysisResponse` in `backend/app/models/api_models.py`
+- [x] T007 Create API client wrapper in `frontend/src/api/client.ts`
+- [x] T008 Create basic UI Layout component in `frontend/src/components/Layout.tsx`
 
 ## Phase 3: User Story 1 - Upload and Convert Puzzle (P1)
 *Goal: Users can upload an image and get a FEN string (basic detection).*
