@@ -1,0 +1,60 @@
+openapi: 3.0.0
+info:
+  title: Chess Photo to FEN API
+  version: 1.0.0
+  description: API for converting chess puzzle images to FEN notation.
+
+paths:
+  /api/analyze:
+    post:
+      summary: Convert image to FEN
+      operationId: analyzeImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The chess puzzle image (JPG/PNG).
+                active_color:
+                  type: string
+                  enum: ['w', 'b']
+                  default: 'w'
+                  description: The side to move.
+      responses:
+        '200':
+          description: Successful conversion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '400':
+          description: Invalid input (e.g., not an image)
+        '422':
+          description: Could not detect board
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    AnalysisResponse:
+      type: object
+      required:
+        - fen
+      properties:
+        fen:
+          type: string
+          example: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+          description: The resulting FEN string.
+        confidence:
+          type: number
+          format: float
+          example: 0.95
+          description: Confidence score of the prediction.
+        detected_board_image:
+          type: string
+          description: Base64 encoded debug image showing detection.
