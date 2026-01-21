@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.models.api_models import AnalysisResponse
 from app.services import image_processing, board_detector, piece_classifier, fen_generator
+from app.core.exceptions import BoardDetectionError
 
 router = APIRouter()
 
@@ -33,7 +34,7 @@ async def analyze_puzzle(file: UploadFile = File(...)):
             confidence=0.8
         )
         
-    except board_detector.BoardDetectionError as e:
+    except BoardDetectionError as e:
         raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         # General error handling for now

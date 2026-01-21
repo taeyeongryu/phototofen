@@ -1,9 +1,11 @@
 import cv2
 import numpy as np
+import os
 from typing import List
+from app.core.exceptions import BoardDetectionError
 
-class BoardDetectionError(Exception):
-    pass
+MIN_BOARD_AREA = 20000  # Minimum area to be considered a board
+DEBUG = False  # Set to False in production or control via env var
 
 def _order_points(pts: np.ndarray) -> np.ndarray:
     """
@@ -23,11 +25,30 @@ def detect_board(image: np.ndarray) -> np.ndarray:
     """
     Detects the chessboard in the image and returns a top-down view (warped).
     """
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Resize large images to improve detection robustness and speed
+    # Target width around 1000-1200 px
+    original_h, original_w = image.shape[:2]
+    target_w = 1024
+    scale = 1.0
+    
+    if original_w > target_w:
+        scale = target_w / original_w
+        new_h = int(original_h * scale)
+        image_resized = cv2.resize(image, (target_w, new_h))
+    else:
+        image_resized = image.copy()
+
+    gray = cv2.cvtColor(image_resized, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     # Use Canny and adaptive thresholding to be robust
     edges = cv2.Canny(blur, 50, 150, apertureSize=3)
     
+    if DEBUG:
+        os.makedirs("debug_output", exist_ok=True)
+        cv2.imwrite("debug_output/01_gray.jpg", gray)
+        cv2.imwrite("debug_output/02_blur.jpg", blur)
+        cv2.imwrite("debug_output/03_edges.jpg", edges)
+
     # Find contours
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
@@ -37,24 +58,55 @@ def detect_board(image: np.ndarray) -> np.ndarray:
     board_contour = None
     
     for c in contours:
+        area = cv2.contourArea(c)
+        if area < MIN_BOARD_AREA:
+            break
+            
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, 0.02 * peri, True)
         
         # We assume the board is a quadrilateral
         if len(approx) == 4:
             board_contour = approx
-            print(f"[DEBUG] Board contour found. Area: {cv2.contourArea(c)}")
+            if DEBUG:
+                print(f"[DEBUG] Board contour found via approxPolyDP. Area: {area}")
             break
+        else:
+            # Fallback: Try convex hull if approxPolyDP fails
+            hull = cv2.convexHull(c)
+            peri_hull = cv2.arcLength(hull, True)
+            approx_hull = cv2.approxPolyDP(hull, 0.02 * peri_hull, True)
             
+            if len(approx_hull) == 4:
+                board_contour = approx_hull
+                if DEBUG:
+                    print(f"[DEBUG] Board contour found via ConvexHull. Area: {area}")
+                break
+
     if board_contour is None:
-        print("[DEBUG] No board contour found.")
+        if DEBUG:
+            print(f"[DEBUG] No board contour found > {MIN_BOARD_AREA} px.")
+            if len(contours) > 0:
+                debug_img = image_resized.copy()
+                cv2.drawContours(debug_img, [contours[0]], -1, (0, 0, 255), 3)
+                cv2.imwrite("debug_output/04_largest_failed_contour.jpg", debug_img)
+            
         raise BoardDetectionError("Could not detect a chessboard in the image.")
         
+    if DEBUG:
+        debug_img = image_resized.copy()
+        cv2.drawContours(debug_img, [board_contour], -1, (0, 255, 0), 3)
+        cv2.imwrite("debug_output/05_board_contour.jpg", debug_img)
+
+    # Scale points back to original image
+    # Note: contours are (N, 1, 2)
+    board_contour_original = (board_contour.astype("float32") / scale)
+    
     # Reshape contour to (4, 2)
-    pts = board_contour.reshape(4, 2)
+    pts = board_contour_original.reshape(4, 2)
     rect = _order_points(pts)
     
-    # Determine width and height of new image
+    # Determine width and height of new image (using original resolution)
     (tl, tr, br, bl) = rect
     widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
     widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
@@ -71,10 +123,13 @@ def detect_board(image: np.ndarray) -> np.ndarray:
         [maxWidth - 1, maxHeight - 1],
         [0, maxHeight - 1]], dtype="float32")
         
-    # Perspective transform
+    # Perspective transform on ORIGINAL image
     M = cv2.getPerspectiveTransform(rect, dst)
     warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
     
+    if DEBUG:
+        cv2.imwrite("debug_output/06_warped.jpg", warped)
+
     return warped
 
 def extract_squares(board_image: np.ndarray) -> List[np.ndarray]:

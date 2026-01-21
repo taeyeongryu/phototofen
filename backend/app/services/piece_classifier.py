@@ -32,5 +32,4 @@ def classify_square(square_image: np.ndarray) -> str:
         else:
             result = 'p' # Black Pawn placeholder
 
-    print(f"[DEBUG] Square Mean={m_val:.2f}, StdDev={s_val:.2f} -> Result='{result}'")
     return result
