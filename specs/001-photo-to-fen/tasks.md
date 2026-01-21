@@ -23,15 +23,15 @@
 *Goal: Users can upload an image and get a FEN string (basic detection).*
 *Independent Test: Upload an image and verify a FEN string is returned and displayed.*
 
-- [ ] T009 [US1] Create `ImageUpload` component in `frontend/src/components/ImageUpload.tsx`
-- [ ] T010 [US1] Implement `POST /api/analyze` stub in `backend/app/api/routes.py`
-- [ ] T011 [US1] Implement image loading and grayscale conversion service in `backend/app/services/image_processing.py`
-- [ ] T012 [US1] Implement board detection logic (OpenCV) in `backend/app/services/board_detector.py`
-- [ ] T013 [US1] Implement square extraction logic in `backend/app/services/board_detector.py`
-- [ ] T014 [US1] Implement basic heuristic/mock piece classifier in `backend/app/services/piece_classifier.py`
-- [ ] T015 [US1] Implement FEN string construction logic in `backend/app/services/fen_generator.py`
-- [ ] T016 [US1] Integrate services into `POST /api/analyze` endpoint in `backend/app/api/routes.py`
-- [ ] T017 [US1] Connect Frontend Upload component to API and display result in `frontend/src/pages/Home.tsx`
+- [x] T009 [US1] Create `ImageUpload` component in `frontend/src/components/ImageUpload.tsx`
+- [x] T010 [US1] Implement `POST /api/analyze` stub in `backend/app/api/routes.py`
+- [x] T011 [US1] Implement image loading and grayscale conversion service in `backend/app/services/image_processing.py`
+- [x] T012 [US1] Implement board detection logic (OpenCV) in `backend/app/services/board_detector.py`
+- [x] T013 [US1] Implement square extraction logic in `backend/app/services/board_detector.py`
+- [x] T014 [US1] Implement basic heuristic/mock piece classifier in `backend/app/services/piece_classifier.py`
+- [x] T015 [US1] Implement FEN string construction logic in `backend/app/services/fen_generator.py`
+- [x] T016 [US1] Integrate services into `POST /api/analyze` endpoint in `backend/app/api/routes.py`
+- [x] T017 [US1] Connect Frontend Upload component to API and display result in `frontend/src/pages/Home.tsx`
 
 ## Phase 4: User Story 2 - Specify Turn to Move (P1)
 *Goal: Allow user to select White or Black to move.*
