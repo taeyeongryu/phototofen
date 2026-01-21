@@ -86,6 +86,11 @@ phototofen/
   - 백엔드 FastAPI 초기 구조 및 CORS 설정 완료
   - 프론트엔드 Vite + React + TypeScript 환경 구축
   - Tailwind CSS 연동 및 UI 기본 틀 마련
+- **[2026-01-21] Phase 3: 기본 업로드 및 FEN 변환 구현 (US1)**
+  - 이미지 업로드 UI (`ImageUpload`) 및 미리보기
+  - 백엔드 이미지 처리 파이프라인 (OpenCV 기반 보드 감지)
+  - 기초적인 기물/빈 칸 분류 로직
+  - FEN 생성 및 결과 표시
 
 ## 📝 라이선스
 
