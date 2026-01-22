@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ImageUpload from '../components/ImageUpload';
 import TurnSelector from '../components/TurnSelector';
+import FenDisplay from '../components/FenDisplay';
 import { analyzeImage } from '../api/client';
 
 const Home: React.FC = () => {
@@ -50,14 +51,7 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      {fen && (
-        <div className="bg-green-50 p-6 rounded-lg border border-green-200 max-w-xl mx-auto">
-          <h3 className="text-lg font-medium text-green-900 mb-2">Result FEN:</h3>
-          <p className="font-mono bg-white p-3 rounded border border-green-300 break-all select-all text-gray-800">
-            {fen}
-          </p>
-        </div>
-      )}
+      {fen && <FenDisplay fen={fen} />}
     </div>
   );
 };

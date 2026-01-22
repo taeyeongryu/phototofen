@@ -46,9 +46,9 @@
 *Goal: Easy copy functionality for the result.*
 *Independent Test: Click copy button and verify clipboard content.*
 
-- [ ] T022 [US3] Create `FenDisplay` component with Copy button in `frontend/src/components/FenDisplay.tsx`
-- [ ] T023 [US3] Implement clipboard copy logic in `frontend/src/components/FenDisplay.tsx`
-- [ ] T024 [US3] Replace raw FEN display in `Home.tsx` with `FenDisplay` component in `frontend/src/pages/Home.tsx`
+- [x] T022 [US3] Create `FenDisplay` component with Copy button in `frontend/src/components/FenDisplay.tsx`
+- [x] T023 [US3] Implement clipboard copy logic in `frontend/src/components/FenDisplay.tsx`
+- [x] T024 [US3] Replace raw FEN display in `Home.tsx` with `FenDisplay` component in `frontend/src/pages/Home.tsx`
 
 ## Phase 6: Polish & Cross-Cutting
 *Goal: Error handling, UI refinements, and final cleanup.*
