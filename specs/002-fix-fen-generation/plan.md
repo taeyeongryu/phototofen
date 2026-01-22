@@ -11,7 +11,7 @@ This plan focuses on making `detect_board` robust by enforcing minimum area thre
 
 ## Technical Context
 
-**Language/Version**: Python 3.10+, TypeScript 5+, Node.js 22
+**Language/Version**: Python 3.13+, TypeScript 5+, Node.js 22
 **Primary Dependencies**: FastAPI, OpenCV (backend), React, Vite (frontend)
 **Storage**: N/A (Stateless)
 **Testing**: pytest

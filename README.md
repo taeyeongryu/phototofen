@@ -19,16 +19,31 @@
 - **상태 관리**: React Hooks
 
 ### 백엔드
-- **프레임워크**: FastAPI (Python 3.10+)
+- **프레임워크**: FastAPI (Python 3.13+)
 - **컴퓨터 비전**: OpenCV
 - **머신러닝/추론**: PyTorch (기물 분류 모델 적용 예정)
 
 ## 📦 시작하기
 
 ### 사전 준비 사항
-- Node.js 18 이상
-- Python 3.10 이상
+- **Node.js**: `v22` (프로젝트 루트의 `.nvmrc` 참고)
+- **Python**: `3.13` (프로젝트 루트의 `.python-version` 참고)
 - `pip` 및 `npm`
+
+**버전 자동 설정 가이드 (nvm, pyenv 권장):**
+
+```bash
+# 1. Node.js 설정 (nvm 사용 시)
+# .nvmrc에 명시된 버전(v22)이 없으면 설치하고, 있으면 바로 사용합니다.
+nvm install
+nvm use
+
+# 2. Python 설정 (pyenv 사용 시)
+# 3.13 버전이 없으면 설치합니다.
+pyenv install 3.13
+# 현재 프로젝트에서 3.13 버전을 사용하도록 설정합니다.
+pyenv local 3.13
+```
 
 ### 설치 및 실행 방법
 
