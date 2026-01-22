@@ -37,10 +37,10 @@
 *Goal: Allow user to select White or Black to move.*
 *Independent Test: Toggle turn selector and verify 'w' or 'b' in FEN output.*
 
-- [ ] T018 [US2] Create `TurnSelector` component in `frontend/src/components/TurnSelector.tsx`
-- [ ] T019 [US2] Update `AnalysisRequest` model in `backend/app/models/api_models.py` to include `active_color`
-- [ ] T020 [US2] Update `fen_generator.py` to use provided `active_color` in `backend/app/services/fen_generator.py`
-- [ ] T021 [US2] Integrate `TurnSelector` into `Home.tsx` and API call in `frontend/src/pages/Home.tsx`
+- [x] T018 [US2] Create `TurnSelector` component in `frontend/src/components/TurnSelector.tsx`
+- [x] T019 [US2] Update `AnalysisRequest` model in `backend/app/models/api_models.py` to include `active_color`
+- [x] T020 [US2] Update `fen_generator.py` to use provided `active_color` in `backend/app/services/fen_generator.py`
+- [x] T021 [US2] Integrate `TurnSelector` into `Home.tsx` and API call in `frontend/src/pages/Home.tsx`
 
 ## Phase 5: User Story 3 - Copy FEN to Clipboard (P2)
 *Goal: Easy copy functionality for the result.*

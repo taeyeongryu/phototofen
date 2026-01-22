@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, DragEvent } from 'react';
+import React, { useState, type ChangeEvent, type DragEvent } from 'react';
 
 interface ImageUploadProps {
   onFileSelect: (file: File) => void;

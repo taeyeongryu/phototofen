@@ -42,3 +42,17 @@ def test_analyze_endpoint(mock_image_processing, mock_board_detector, mock_piece
     # With all '1', we expect "8/8/8/8/8/8/8/8 w - - 0 1"
     assert data["fen"] == "8/8/8/8/8/8/8/8 w - - 0 1"
     assert data["confidence"] == 0.8
+
+def test_analyze_endpoint_with_active_color_black(mock_image_processing, mock_board_detector, mock_piece_classifier):
+    # Create a dummy image file
+    file_content = b"fake image content"
+    files = {"file": ("test.jpg", file_content, "image/jpeg")}
+    data = {"active_color": "b"}
+    
+    response = client.post("/api/analyze", files=files, data=data)
+    
+    assert response.status_code == 200
+    res_data = response.json()
+    assert "fen" in res_data
+    # Expect 'b' in the FEN string
+    assert res_data["fen"] == "8/8/8/8/8/8/8/8 b - - 0 1"

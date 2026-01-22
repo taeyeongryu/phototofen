@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from app.models.api_models import AnalysisResponse
 from app.services import image_processing, board_detector, piece_classifier, fen_generator
 from app.core.exceptions import BoardDetectionError
@@ -6,7 +6,10 @@ from app.core.exceptions import BoardDetectionError
 router = APIRouter()
 
 @router.post("/analyze", response_model=AnalysisResponse)
-async def analyze_puzzle(file: UploadFile = File(...)):
+async def analyze_puzzle(
+    file: UploadFile = File(...),
+    active_color: str = Form("w")
+):
     if not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="Invalid file type. Please upload an image.")
     
@@ -27,7 +30,7 @@ async def analyze_puzzle(file: UploadFile = File(...)):
         pieces = [piece_classifier.classify_square(sq) for sq in squares]
         
         # 6. Generate FEN
-        fen = fen_generator.generate_fen(pieces)
+        fen = fen_generator.generate_fen(pieces, active_color=active_color)
         
         return AnalysisResponse(
             fen=fen,
