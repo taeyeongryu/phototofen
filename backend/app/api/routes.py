@@ -39,7 +39,6 @@ async def analyze_puzzle(
         
     except BoardDetectionError as e:
         raise HTTPException(status_code=422, detail=str(e))
-    except Exception as e:
-        # General error handling for now
-        print(f"Error processing image: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error during processing.")
+    except Exception:
+        # Unexpected errors
+        raise HTTPException(status_code=500, detail="An unexpected error occurred while processing the image.")

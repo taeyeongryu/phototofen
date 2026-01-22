@@ -1,4 +1,5 @@
 import React, { useState, type ChangeEvent, type DragEvent } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 interface ImageUploadProps {
   onFileSelect: (file: File) => void;
@@ -122,8 +123,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, isLoading = fal
         )}
       </div>
       {isLoading && (
-          <div className="mt-4 text-center text-blue-600">
-              Processing...
+          <div className="mt-4 flex flex-col items-center justify-center space-y-2">
+              <LoadingSpinner size="md" />
+              <span className="text-blue-600 font-medium">Processing chessboard...</span>
           </div>
       )}
     </div>

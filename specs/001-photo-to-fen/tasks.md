@@ -53,10 +53,10 @@
 ## Phase 6: Polish & Cross-Cutting
 *Goal: Error handling, UI refinements, and final cleanup.*
 
-- [ ] T025 Add loading spinner state to `Home.tsx` and `ImageUpload.tsx`
-- [ ] T026 Implement error handling for failed uploads/conversions in `frontend/src/pages/Home.tsx`
-- [ ] T027 Add error response handling in `backend/app/api/routes.py` (e.g. no board found)
-- [ ] T028 Review and cleanup code (remove debug prints, format files)
+- [x] T025 Add loading spinner state to `Home.tsx` and `ImageUpload.tsx`
+- [x] T026 Implement error handling for failed uploads/conversions in `frontend/src/pages/Home.tsx`
+- [x] T027 Add error response handling in `backend/app/api/routes.py` (e.g. no board found)
+- [x] T028 Review and cleanup code (remove debug prints, format files)
 
 ## Dependencies
 
