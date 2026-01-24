@@ -3,12 +3,14 @@ import LoadingSpinner from './LoadingSpinner';
 
 interface ImageUploadProps {
   onFileSelect: (file: File) => void;
+  onRemove?: () => void;
   isLoading?: boolean;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, isLoading = false }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, onRemove, isLoading = false }) => {
   const [dragActive, setDragActive] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -49,6 +51,18 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, isLoading = fal
     onFileSelect(file);
   };
 
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setPreview(null);
+    if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
+    if (onRemove) {
+        onRemove();
+    }
+  };
+
   return (
     <div className="w-full max-w-xl mx-auto">
       <div
@@ -63,6 +77,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, isLoading = fal
         onDrop={handleDrop}
       >
         <input
+          ref={fileInputRef}
           type="file"
           id="image-upload"
           className="hidden"
@@ -79,12 +94,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFileSelect, isLoading = fal
                     className="mx-auto max-h-64 rounded shadow-sm"
                 />
                 <button 
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        setPreview(null);
-                        // Reset input value if needed, though uncontrolled here is fine for now
-                    }}
+                    onClick={handleRemove}
                     className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 focus:outline-none"
                     title="Remove image"
                 >

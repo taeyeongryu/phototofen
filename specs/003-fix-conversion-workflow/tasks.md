@@ -7,9 +7,9 @@
 
 **Purpose**: Verify backend readiness and setup basic frontend structure.
 
-- [ ] T001 [P] Verify backend `active_color` handling in `backend/app/api/routes.py` and `backend/app/services/fen_generator.py`
-- [ ] T002 Add a unit test in `backend/tests/test_api.py` to ensure `active_color` correctly affects the FEN output.
-- [ ] T003 [P] Update `frontend/src/api/client.ts` if necessary to ensure `analyzeImage` correctly passes `active_color` as a form field.
+- [x] T001 [P] Verify backend `active_color` handling in `backend/app/api/routes.py` and `backend/app/services/fen_generator.py`
+- [x] T002 Add a unit test in `backend/tests/test_api.py` to ensure `active_color` correctly affects the FEN output.
+- [x] T003 [P] Update `frontend/src/api/client.ts` if necessary to ensure `analyzeImage` correctly passes `active_color` as a form field.
 
 ---
 
@@ -19,8 +19,8 @@
 
 **Independent Test**: Upload an image, remove it, and upload the same image again.
 
-- [ ] T004 [P] Modify `frontend/src/components/ImageUpload.tsx` to clear the `input.value` when an image is removed.
-- [ ] T005 [P] Add a `key` prop to `ImageUpload` in `frontend/src/pages/Home.tsx` based on a "reset" state or timestamp to force re-mount if needed.
+- [x] T004 [P] Modify `frontend/src/components/ImageUpload.tsx` to clear the `input.value` when an image is removed.
+- [x] T005 [P] Add a `key` prop to `ImageUpload` in `frontend/src/pages/Home.tsx` based on a "reset" state or timestamp to force re-mount if needed.
 
 ---
 
@@ -30,10 +30,10 @@
 
 **Independent Test**: Upload an image and verify no API call is made until "Convert" is clicked.
 
-- [ ] T006 Lift `selectedFile` state from `ImageUpload.tsx` to `frontend/src/pages/Home.tsx`.
-- [ ] T007 Modify `ImageUpload.tsx` to only handle file selection and preview, calling `onFileSelect` without triggering upload logic.
-- [ ] T008 Add "Convert" button to `frontend/src/pages/Home.tsx`, enabled only when `selectedFile` is present.
-- [ ] T009 Implement `handleConvert` in `frontend/src/pages/Home.tsx` to call the API with the stored `selectedFile`.
+- [x] T006 Lift `selectedFile` state from `ImageUpload.tsx` to `frontend/src/pages/Home.tsx`.
+- [x] T007 Modify `ImageUpload.tsx` to only handle file selection and preview, calling `onFileSelect` without triggering upload logic.
+- [x] T008 Add "Convert" button to `frontend/src/pages/Home.tsx`, enabled only when `selectedFile` is present.
+- [x] T009 Implement `handleConvert` in `frontend/src/pages/Home.tsx` to call the API with the stored `selectedFile`.
 
 ---
 
@@ -43,9 +43,9 @@
 
 **Independent Test**: Select "Black", then "Convert", and verify FEN ends with `b`. Change side and verify FEN does NOT change until "Convert" is clicked again.
 
-- [ ] T010 Update `TurnSelector.tsx` usage in `Home.tsx` to ensure it only updates the `activeColor` state.
-- [ ] T011 Ensure `handleConvert` uses the current `activeColor` state from `Home.tsx` when making the API call.
-- [ ] T012 Verify that toggling `activeColor` after a result is shown does not automatically re-trigger or update the result.
+- [x] T010 Update `TurnSelector.tsx` usage in `Home.tsx` to ensure it only updates the `activeColor` state.
+- [x] T011 Ensure `handleConvert` uses the current `activeColor` state from `Home.tsx` when making the API call.
+- [x] T012 Verify that toggling `activeColor` after a result is shown does not automatically re-trigger or update the result.
 
 ---
 
@@ -53,9 +53,9 @@
 
 **Purpose**: Final cleanup and verification against success criteria.
 
-- [ ] T013 [P] Remove any unused state or props from `ImageUpload.tsx` and `TurnSelector.tsx`.
-- [ ] T014 [P] Ensure error handling in `Home.tsx` correctly clears the loading state and displays user-friendly messages.
-- [ ] T015 Run validation of `quickstart.md` steps.
+- [x] T013 [P] Remove any unused state or props from `ImageUpload.tsx` and `TurnSelector.tsx`.
+- [x] T014 [P] Ensure error handling in `Home.tsx` correctly clears the loading state and displays user-friendly messages.
+- [x] T015 Run validation of `quickstart.md` steps.
 
 ---
 

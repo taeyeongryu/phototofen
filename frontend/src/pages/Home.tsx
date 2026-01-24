@@ -5,17 +5,27 @@ import FenDisplay from '../components/FenDisplay';
 import { analyzeImage } from '../api/client';
 
 const Home: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fen, setFen] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeColor, setActiveColor] = useState<'w' | 'b'>('w');
+  const [uploadKey, setUploadKey] = useState(0);
 
-  const handleUpload = async (file: File) => {
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+    setFen(null);
+    setError(null);
+  };
+
+  const handleConvert = async () => {
+    if (!selectedFile) return;
+
     setLoading(true);
     setError(null);
     setFen(null);
     try {
-      const result = await analyzeImage(file, activeColor);
+      const result = await analyzeImage(selectedFile, activeColor);
       setFen(result.fen);
     } catch (err) {
       console.error(err);
@@ -26,12 +36,19 @@ const Home: React.FC = () => {
     }
   };
 
+  const handleRemove = () => {
+    setSelectedFile(null);
+    setFen(null);
+    setError(null);
+    setUploadKey(prev => prev + 1);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900">Upload Chess Puzzle</h2>
         <p className="mt-2 text-gray-600">
-          Upload a clear photo of a chessboard to generate its FEN notation.
+          Upload a clear photo of a chessboard, select the side to play, and convert to FEN.
         </p>
       </div>
 
@@ -42,7 +59,26 @@ const Home: React.FC = () => {
           disabled={loading}
         />
         
-        <ImageUpload onFileSelect={handleUpload} isLoading={loading} />
+        <div className="space-y-4">
+          <ImageUpload 
+              key={uploadKey}
+              onFileSelect={handleFileSelect} 
+              onRemove={handleRemove}
+              isLoading={loading} 
+          />
+
+          <button
+            onClick={handleConvert}
+            disabled={!selectedFile || loading}
+            className={`w-full py-3 px-4 rounded-md shadow-sm text-sm font-medium text-white transition-colors duration-200 
+              ${!selectedFile || loading 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              }`}
+          >
+            {loading ? 'Converting...' : 'Convert to FEN'}
+          </button>
+        </div>
       </div>
 
       {error && (
