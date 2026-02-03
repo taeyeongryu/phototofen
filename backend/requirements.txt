@@ -7,3 +7,5 @@ pydantic
 ruff
 pytest
 httpx
+torch
+torchvision

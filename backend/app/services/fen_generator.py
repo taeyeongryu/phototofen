@@ -1,11 +1,12 @@
-from typing import List
+from typing import List, Union
+from app.models.api_models import PieceClass
 
-def generate_fen(board_pieces: List[str], active_color: str = 'w') -> str:
+def generate_fen(board_pieces: List[Union[str, PieceClass]], active_color: str = 'w') -> str:
     """
     Constructs a FEN string from a list of 64 piece characters (rank-major order).
     
     Args:
-        board_pieces: List of 64 strings, representing the board from a8 to h1 (row by row).
+        board_pieces: List of 64 items (PieceClass enum or strings), representing the board from a8 to h1.
         active_color: 'w' or 'b'.
     """
     rows = []
@@ -14,13 +15,16 @@ def generate_fen(board_pieces: List[str], active_color: str = 'w') -> str:
         empty_count = 0
         fen_row = ""
         for p in row_pieces:
-            if p == '1':
+            # Handle PieceClass enum or string
+            val = p.value if isinstance(p, PieceClass) else p
+            
+            if val == "empty" or val == '1':
                 empty_count += 1
             else:
                 if empty_count > 0:
                     fen_row += str(empty_count)
                     empty_count = 0
-                fen_row += p
+                fen_row += val
         if empty_count > 0:
             fen_row += str(empty_count)
         rows.append(fen_row)

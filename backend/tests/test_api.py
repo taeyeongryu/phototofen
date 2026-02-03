@@ -22,11 +22,13 @@ def mock_board_detector():
             mock_extract.return_value = [np.zeros((10, 10, 3), dtype=np.uint8) for _ in range(64)]
             yield mock_detect, mock_extract
 
+from app.models.api_models import PieceClass
+
 @pytest.fixture
 def mock_piece_classifier():
-    with patch('app.services.piece_classifier.classify_square') as mock:
+    with patch('app.services.classifier.classify_square') as mock:
         # Return mostly empty
-        mock.side_effect = lambda sq: '1' 
+        mock.side_effect = lambda sq: PieceClass.EMPTY 
         yield mock
 
 def test_analyze_endpoint(mock_image_processing, mock_board_detector, mock_piece_classifier):

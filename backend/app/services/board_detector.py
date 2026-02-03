@@ -132,10 +132,14 @@ def detect_board(image: np.ndarray) -> np.ndarray:
 
     return warped
 
-def extract_squares(board_image: np.ndarray) -> List[np.ndarray]:
+def extract_squares(board_image: np.ndarray, padding_top: int = 0) -> List[np.ndarray]:
     """
     Splits the board image into 64 squares.
     Returns a list of 64 images (top-left to bottom-right).
+    
+    Args:
+        board_image: The warped top-down view of the board.
+        padding_top: Number of pixels to extend the crop upwards (useful for tall pieces).
     """
     h, w = board_image.shape[:2]
     sq_h = h // 8
@@ -144,10 +148,32 @@ def extract_squares(board_image: np.ndarray) -> List[np.ndarray]:
     squares = []
     for row in range(8):
         for col in range(8):
+            # Base coordinates
             y1 = row * sq_h
             y2 = (row + 1) * sq_h
             x1 = col * sq_w
             x2 = (col + 1) * sq_w
-            square = board_image[y1:y2, x1:x2]
-            squares.append(square)
+            
+            # Apply padding to y1
+            pad_y1 = y1 - padding_top
+            
+            # Handle boundary
+            if pad_y1 < 0:
+                # If we go off the top edge, we need to pad the image
+                # Calculate how much we are off
+                missing_top = -pad_y1
+                
+                # Crop from 0 to y2 first
+                crop = board_image[0:y2, x1:x2]
+                
+                # Add padding to the top of the crop
+                # Use border replication or constant color (black usually fine, or replicate)
+                # cv2.copyMakeBorder(src, top, bottom, left, right, borderType, value)
+                crop_padded = cv2.copyMakeBorder(crop, missing_top, 0, 0, 0, cv2.BORDER_REPLICATE)
+                squares.append(crop_padded)
+            else:
+                # Normal crop
+                crop = board_image[pad_y1:y2, x1:x2]
+                squares.append(crop)
+                
     return squares

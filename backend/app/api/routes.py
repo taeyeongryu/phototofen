@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from app.models.api_models import AnalysisResponse
-from app.services import image_processing, board_detector, piece_classifier, fen_generator
+from app.services import image_processing, board_detector, classifier, fen_generator
 from app.core.exceptions import BoardDetectionError
 
 router = APIRouter()
@@ -23,11 +23,17 @@ async def analyze_puzzle(
         # 3. Detect board
         warped_board = board_detector.detect_board(image)
         
+        # Calculate dynamic padding (e.g., 50% of square height) to capture tall pieces
+        board_h = warped_board.shape[0]
+        sq_h = board_h // 8
+        padding_top = int(sq_h * 0.5)
+        
         # 4. Extract squares
-        squares = board_detector.extract_squares(warped_board)
+        squares = board_detector.extract_squares(warped_board, padding_top=padding_top)
         
         # 5. Classify pieces
-        pieces = [piece_classifier.classify_square(sq) for sq in squares]
+        # Using the new CNN classifier
+        pieces = [classifier.classify_square(sq) for sq in squares]
         
         # 6. Generate FEN
         fen = fen_generator.generate_fen(pieces, active_color=active_color)
@@ -39,6 +45,8 @@ async def analyze_puzzle(
         
     except BoardDetectionError as e:
         raise HTTPException(status_code=422, detail=str(e))
-    except Exception:
+    except Exception as e:
+        # Log the error for debugging (print for now, use logger in real app)
+        print(f"Error processing image: {e}")
         # Unexpected errors
         raise HTTPException(status_code=500, detail="An unexpected error occurred while processing the image.")
