@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: PhotoToFen API
+  version: 1.0.0
+paths:
+  /analyze:
+    post:
+      summary: Analyze a chessboard image and return FEN
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                active_color:
+                  type: string
+                  default: 'w'
+                  enum: ['w', 'b']
+      responses:
+        '200':
+          description: Successful analysis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResponse'
+        '422':
+          description: Board detection failed
+        '500':
+          description: Server error
+components:
+  schemas:
+    AnalysisResponse:
+      type: object
+      properties:
+        fen:
+          type: string
+          example: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        confidence:
+          type: number
+          format: float
+          example: 0.95

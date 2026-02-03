@@ -119,6 +119,11 @@ phototofen/
   - 수동 변환 워크플로우 적용 (사진 업로드와 변환 로직 분리)
   - 변환 시점에 선택된 진영(White/Black)이 정확히 반영되도록 수정
   - 동일한 사진 재업로드 불가 버그 수정 및 UI/UX 정리
+- **[2026-02-03] 004-cnn-piece-classifier 완료**
+  - CNN 기반 기물 분류 모델(MobileNetV2) 추론 인프라 구축
+  - 모델 학습을 위한 `train_model.py` 스크립트 제공 및 13개 클래스 정의
+  - 기물이 이미지 위쪽으로 잘리지 않도록 동적 패딩(Dynamic Padding) 기반 크롭 로직 개선
+  - 백엔드 의존성 업데이트 (PyTorch, Torchvision 추가) 및 통합 테스트 완료
 
 ## 📝 라이선스
 
