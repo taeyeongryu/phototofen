@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import torch
 from torchvision import transforms
-from app.services import classifier
+from app.services import classifier, piece_classifier
 from app.models.api_models import PieceClass
 
 @pytest.fixture
@@ -32,14 +32,11 @@ def test_classify_square_inference(mock_load_model, mock_model):
     mock_load_model.return_value = mock_model
     
     # Create dummy output tensor (batch_size=1, num_classes=13)
-    # Let's say we want to predict 'white_pawn' which corresponds to some index.
-    # In our heuristic map in classifier.py, "white_pawn" is at index 10 (0-based) 
-    # based on the sorted list:
-    # 0: black_bishop, 1: black_king, 2: black_knight, 3: black_pawn, 4: black_queen, 5: black_rook,
-    # 6: empty, 
-    # 7: white_bishop, 8: white_king, 9: white_knight, 10: white_pawn, ...
+    # List: black_bishop, black_king, black_knight, black_pawn, black_queen, black_rook,
+    #       empty,
+    #       white_bishop, white_king, white_knight, white_pawn, white_queen, white_rook
     
-    # We want index 10 to be the max
+    # "white_pawn" is at index 10
     dummy_output = torch.randn(1, 13)
     dummy_output[0, 10] = 10.0 # Make it the max
     
@@ -49,7 +46,7 @@ def test_classify_square_inference(mock_load_model, mock_model):
     dummy_image = np.zeros((224, 224, 3), dtype=np.uint8)
     
     # Run classification
-    result = classifier.classify_square(dummy_image)
+    result = piece_classifier.classify_square(dummy_image)
     
     # Verify
     assert result == PieceClass.WHITE_PAWN
@@ -68,9 +65,8 @@ def test_classify_square_empty(mock_load_model, mock_model):
     dummy_output[0, 6] = 10.0
     
     mock_model.return_value = dummy_output
-    dummy_image = np.zeros((50, 50, 3), dtype=np.uint8) # Different size to test resize
+    dummy_image = np.zeros((50, 50, 3), dtype=np.uint8)
     
-    result = classifier.classify_square(dummy_image)
+    result = piece_classifier.classify_square(dummy_image)
     
     assert result == PieceClass.EMPTY
-

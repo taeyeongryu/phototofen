@@ -26,7 +26,7 @@ from app.models.api_models import PieceClass
 
 @pytest.fixture
 def mock_piece_classifier():
-    with patch('app.services.classifier.classify_square') as mock:
+    with patch('app.services.piece_classifier.classify_square') as mock:
         # Return mostly empty
         mock.side_effect = lambda sq: PieceClass.EMPTY 
         yield mock
